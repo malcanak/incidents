@@ -333,7 +333,6 @@
       <tr>
         <th style="width:32px">#</th>
         <th style="width:90px">Дата</th>
-        <th style="width:72px">Время</th>
         <th style="min-width:100px">ФИО</th>
         <th style="min-width:100px">Источник разряда</th>
         <th style="min-width:100px">Местоположение</th>
@@ -373,7 +372,7 @@ function today() {
 function addRow(animate) {
   idCounter++;
   const id = idCounter;
-  rows.push({ id, date: today(), time: '', name: '', source: '', location: '', conseq: '' });
+  rows.push({ id, date: today(), name: '', source: '', location: '', conseq: '' });
   renderTable();
   if (animate !== false) {
     const lastRow = document.querySelector(`tr[data-id="${id}"]`);
@@ -395,7 +394,6 @@ function renderTable() {
     tr.innerHTML = `
       <td class="row-num">${i+1}</td>
       <td><input type="text" value="${row.date}" oninput="updateField(${row.id},'date',this.value)" onkeydown="maskDate(event,this)" placeholder="дд.мм.гггг" maxlength="10"></td>
-      <td><input type="text" value="${row.time}" oninput="updateField(${row.id},'time',this.value)" onkeydown="maskTime(event,this)" placeholder="чч:мм" maxlength="5"></td>
       <td><input type="text" value="${row.name}" oninput="updateField(${row.id},'name',this.value)" placeholder="Иванов И.И."></td>
       <td><input type="text" value="${row.source}" oninput="updateField(${row.id},'source',this.value)" placeholder="дверная ручка, ПК..."></td>
       <td><input type="text" value="${row.location}" oninput="updateField(${row.id},'location',this.value)" placeholder="кухня, склад, кабинет..."></td>
@@ -426,10 +424,10 @@ function plural(n, one, few, many) {
 }
 
 function exportCSV() {
-  const header = ['№','Дата','Время','ФИО','Источник разряда','Местоположение','Последствия'];
+  const header = ['№','Дата','ФИО','Источник разряда','Местоположение','Последствия'];
   const lines = [header.join(';')];
   rows.forEach((r,i) => {
-    lines.push([i+1, r.date, r.time, r.name, r.source, r.location, r.conseq].join(';'));
+    lines.push([i+1, r.date, r.name, r.source, r.location, r.conseq].join(';'));
   });
   const blob = new Blob(['\ufeff'+lines.join('\n')], {type:'text/csv;charset=utf-8'});
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
@@ -444,7 +442,7 @@ async function exportToSheets() {
 
   const data = rows
     .filter(r => r.date || r.name || r.source)
-    .map((r, i) => [i+1, r.date, r.time, r.name, r.source, r.location, r.conseq]);
+    .map((r, i) => [i+1, r.date, r.name, r.source, r.location, r.conseq]);
 
   if (data.length === 0) {
     alert('Нет данных для экспорта — заполните хотя бы одну строку.');
@@ -490,15 +488,6 @@ function maskDate(e, input) {
   }, 0);
 }
 
-function maskTime(e, input) {
-  setTimeout(() => {
-    let v = input.value.replace(/\D/g, '').slice(0, 4);
-    let out = '';
-    if (v.length >= 1) out = v.slice(0,2);
-    if (v.length >= 3) out += ':' + v.slice(2,4);
-    input.value = out;
-  }, 0);
-}
 
 // ─── СОХРАНЕНИЕ ───
 const STORAGE_KEY = 'static_incidents_v1';
