@@ -317,6 +317,19 @@
 </style>
 </head>
 <body>
+<div id="lockScreen" style="position:fixed;inset:0;background:#f5f4f0;display:flex;align-items:center;justify-content:center;z-index:9999;">
+  <div style="background:#fff;border:1px solid #d4d0c8;border-left:4px solid #e8451a;padding:40px 48px;max-width:340px;width:100%;">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:#e8451a;margin-bottom:8px;">Доступ</div>
+    <div style="font-family:'IBM Plex Sans',sans-serif;font-size:20px;font-weight:600;margin-bottom:24px;">Введите пароль</div>
+    <input id="pwdInput" type="password" placeholder="пароль" onkeydown="if(event.key==='Enter')checkPwd()"
+      style="width:100%;padding:10px 12px;border:1px solid #d4d0c8;font-family:'IBM Plex Sans',sans-serif;font-size:14px;outline:none;margin-bottom:8px;">
+    <div id="pwdError" style="font-family:'IBM Plex Sans',sans-serif;font-size:12px;color:#e8451a;min-height:18px;margin-bottom:12px;"></div>
+    <button onclick="checkPwd()"
+      style="width:100%;padding:10px;background:#1a1a18;color:#fff;border:none;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;">
+      Войти
+    </button>
+  </div>
+</div>
 
 <div class="header">
   <div class="header-label">Журнал учёта</div>
@@ -357,6 +370,24 @@
 
 
 <script>
+// ─── ПАРОЛЬ ───
+const PWD = 'рика';
+function checkPwd() {
+  const val = document.getElementById('pwdInput').value;
+  if (val === PWD) {
+    document.getElementById('lockScreen').style.display = 'none';
+    sessionStorage.setItem('unlocked', '1');
+  } else {
+    document.getElementById('pwdError').textContent = 'Неверный пароль';
+    document.getElementById('pwdInput').value = '';
+    document.getElementById('pwdInput').focus();
+  }
+}
+if (sessionStorage.getItem('unlocked') === '1') {
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('lockScreen').style.display = 'none';
+  });
+}
 const SOURCES = ['— выберите —','Системный блок / ПК','Монитор','Ноутбук','Принтер / МФУ','Кресло','Дверная ручка','Стол / стойка','Другой сотрудник','Стена / перегородка','Металлический шкаф','Прочее'];
 const TYPES   = ['— тип —','ПК / моноблок','Ноутбук','Принтер / МФУ','Сервер / ИБП','Монитор','Смартфон / планшет','Мебель','Не связан с техникой','Прочее'];
 const CONSEQ  = ['— последствия —','Неприятный укол, без последствий','Перезагрузка ПК','ПК ушёл в сон / защиту','Синий экран / BSOD','Потеря данных / файлов','Выход из строя устройства','Прочее'];
