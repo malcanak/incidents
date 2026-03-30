@@ -184,7 +184,6 @@ body.mode-mobile .desktop-wrap { display: none; }
     <table>
       <thead>
         <tr>
-          <th style="width:32px">#</th>
           <th style="width:90px">Дата</th>
           <th style="min-width:100px">ФИО</th>
           <th style="min-width:100px">Источник разряда</th>
@@ -356,7 +355,6 @@ function renderTable() {
     const tr = document.createElement('tr');
     tr.dataset.id = row.id;
     tr.innerHTML = `
-      <td class="row-num">${i+1}</td>
       <td><input type="text" value="${row.date}" oninput="updateField(${row.id},'date',this.value)" onkeydown="maskDate(event,this)" placeholder="дд.мм.гггг" maxlength="10"></td>
       <td><input type="text" value="${row.name}" oninput="updateField(${row.id},'name',this.value)" placeholder="Иванов И.И."></td>
       <td><input type="text" value="${row.source}" oninput="updateField(${row.id},'source',this.value)" placeholder="дверная ручка, ПК..."></td>
