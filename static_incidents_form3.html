@@ -346,7 +346,7 @@
 
 <div class="actions">
   <button class="btn btn-add" onclick="addRow()">+ Добавить строку</button>
-  <button class="btn btn-print" onclick="window.print()">↓ Печать / PDF</button>
+  <button class="btn btn-print" onclick="duplicateLastRow()">⎘ Дублировать строку</button>
   <button class="btn btn-export" id="btnExport" onclick="exportToSheets()">Экспорт</button>
   <span id="saveIndicator" style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#1a7a3f;opacity:0;transition:opacity 0.3s;margin-left:8px;">✓ сохранено</span>
 </div>
@@ -476,7 +476,19 @@ async function exportToSheets() {
   }
 }
 
-// ─── МАСКИ ВВОДА ───
+function duplicateLastRow() {
+  if (rows.length === 0) { addRow(); return; }
+  const last = rows[rows.length - 1];
+  idCounter++;
+  const id = idCounter;
+  rows.push({ id, date: today(), name: last.name, source: last.source, location: last.location, conseq: last.conseq });
+  renderTable();
+  const lastRow = document.querySelector(`tr[data-id="${id}"]`);
+  if (lastRow) { lastRow.classList.add('flash'); setTimeout(() => lastRow.classList.remove('flash'), 400); }
+  save();
+}
+
+
 function maskDate(e, input) {
   setTimeout(() => {
     let v = input.value.replace(/\D/g, '').slice(0, 8);
