@@ -2,372 +2,338 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Журнал инцидентов — статическое электричество</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="⚡ Ток">
+<meta name="theme-color" content="#1a1a18">
+<title>⚡ Журнал — статическое электричество</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&family=Unbounded:wght@400;600;800&family=Onest:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #f5f4f0;
-    --panel: #ffffff;
-    --border: #d4d0c8;
-    --accent: #e8451a;
-    --accent2: #f7a800;
-    --text: #1a1a18;
-    --muted: #7a7870;
-    --input-bg: #fafaf8;
-    --row-hover: #fff8f0;
-    --danger: #e8451a;
-    --success: #1a7a3f;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'IBM Plex Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    padding: 32px 16px;
-  }
+:root { --accent: #e8451a; --accent2: #f7a800; --success-color: #1a7a3f; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-  /* HEADER */
-  .header {
-    max-width: 860px;
-    margin: 0 auto 32px;
-    border-left: 4px solid var(--accent);
-    padding-left: 20px;
-  }
-  .header-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 4px;
-  }
-  .header h1 {
-    font-size: 26px;
-    font-weight: 600;
-    line-height: 1.2;
-    margin-bottom: 6px;
-  }
-  .header p {
-    font-size: 13px;
-    color: var(--muted);
-    font-weight: 300;
-  }
-  .org-line {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 8px;
-  }
+/* ── DESKTOP ── */
+body.mode-desktop {
+  font-family: 'IBM Plex Sans', sans-serif;
+  background: #f5f4f0; color: #1a1a18;
+  min-height: 100vh; padding: 32px 16px;
+}
+body.mode-desktop .desktop-wrap { display: block; }
+body.mode-desktop .mobile-wrap  { display: none; }
 
-  /* META */
-  .meta-bar {
-    max-width: 860px;
-    margin: 0 auto 24px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 12px;
-  }
-  .meta-field label {
-    display: block;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    font-family: 'IBM Plex Mono', monospace;
-    margin-bottom: 4px;
-  }
-  .meta-field input, .meta-field select {
-    width: 100%;
-    padding: 8px 10px;
-    border: 1px solid var(--border);
-    background: var(--input-bg);
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 13px;
-    color: var(--text);
-    outline: none;
-    transition: border-color 0.15s;
-  }
-  .meta-field input:focus, .meta-field select:focus {
-    border-color: var(--accent);
-  }
+.desktop-wrap { display: none; }
 
-  /* TABLE */
-  .table-wrapper {
-    max-width: 860px;
-    margin: 0 auto;
-    background: var(--panel);
-    border: 1px solid var(--border);
-  }
-  .table-title {
-    background: var(--text);
-    color: #fff;
-    padding: 10px 16px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .table-title span { color: var(--accent2); }
+.switch-btn-desktop {
+  max-width: 860px; margin: 0 auto 20px;
+  display: flex; justify-content: flex-end;
+}
+.switch-btn-desktop button {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 8px 16px; background: #1a1a18; color: #fff;
+  border: none; cursor: pointer; border-radius: 6px; transition: background 0.15s;
+}
+.switch-btn-desktop button:hover { background: #333; }
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-  }
-  thead th {
-    background: #f0ede8;
-    padding: 9px 10px;
-    text-align: left;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted);
-    border-bottom: 1px solid var(--border);
-    white-space: nowrap;
-  }
-  tbody tr {
-    border-bottom: 1px solid #ece9e3;
-    transition: background 0.1s;
-  }
-  tbody tr:hover { background: var(--row-hover); }
-  tbody td { padding: 0; }
-  tbody td input, tbody td select {
-    width: 100%;
-    padding: 9px 10px;
-    border: none;
-    border-right: 1px solid #ece9e3;
-    background: transparent;
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 13px;
-    color: var(--text);
-    outline: none;
-  }
-  tbody td input:focus, tbody td select:focus {
-    background: #fff8f0;
-    box-shadow: inset 0 0 0 1px var(--accent2);
-  }
-  tbody td:last-child input, tbody td:last-child select { border-right: none; }
-  .row-num {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    text-align: center;
-    padding: 9px 8px !important;
-    width: 32px;
-    border-right: 1px solid var(--border) !important;
-    cursor: default;
-  }
-  .btn-del {
-    background: none;
-    border: none;
-    color: #ccc;
-    cursor: pointer;
-    font-size: 16px;
-    padding: 0 10px;
-    line-height: 1;
-    transition: color 0.15s;
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-  .btn-del:hover { color: var(--danger); }
+.d-header { max-width: 860px; margin: 0 auto 32px; border-left: 4px solid var(--accent); padding-left: 20px; }
+.d-header-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+.d-header h1 { font-size: 26px; font-weight: 600; line-height: 1.2; }
 
-  /* ACTIONS */
-  .actions {
-    max-width: 860px;
-    margin: 16px auto 0;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-  .btn {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .btn-add {
-    background: var(--text);
-    color: #fff;
-  }
-  .btn-add:hover { background: #333; }
-  .btn-print {
-    background: var(--accent);
-    color: #fff;
-  }
-  .btn-print:hover { background: #c73a15; }
-  .btn-export {
-    background: transparent;
-    color: var(--text);
-    border: 1px solid var(--border);
-  }
-  .btn-export:hover { border-color: var(--text); }
+.table-wrapper { max-width: 860px; margin: 0 auto; background: #fff; border: 1px solid #d4d0c8; }
+.table-title { background: #1a1a18; color: #fff; padding: 10px 16px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; }
+.table-title span { color: var(--accent2); }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead th { background: #f0ede8; padding: 9px 10px; text-align: left; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #7a7870; border-bottom: 1px solid #d4d0c8; white-space: nowrap; }
+tbody tr { border-bottom: 1px solid #ece9e3; transition: background 0.1s; }
+tbody tr:hover { background: #fff8f0; }
+tbody td { padding: 0; }
+tbody td input, tbody td select { width: 100%; padding: 9px 10px; border: none; border-right: 1px solid #ece9e3; background: transparent; font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; color: #1a1a18; outline: none; }
+tbody td input:focus, tbody td select:focus { background: #fff8f0; box-shadow: inset 0 0 0 1px var(--accent2); }
+tbody td:last-child input, tbody td:last-child select { border-right: none; }
+.row-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #7a7870; text-align: center; padding: 9px 8px !important; width: 32px; border-right: 1px solid #d4d0c8 !important; cursor: default; }
+.btn-del { background: none; border: none; color: #ccc; cursor: pointer; font-size: 16px; padding: 0 10px; line-height: 1; transition: color 0.15s; display: block; width: 100%; height: 100%; }
+.btn-del:hover { color: var(--accent); }
 
-  .counter-bar {
-    max-width: 860px;
-    margin: 16px auto 0;
-    display: flex;
-    gap: 24px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-  }
-  .counter-item { color: var(--muted); }
-  .counter-item b { color: var(--text); font-size: 20px; font-weight: 600; vertical-align: middle; margin-right: 4px; }
-  .counter-item.red b { color: var(--accent); }
-  .counter-item.yellow b { color: var(--accent2); }
+.d-actions { max-width: 860px; margin: 16px auto 0; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.btn { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; padding: 10px 20px; border: none; cursor: pointer; transition: all 0.15s; }
+.btn-add { background: #1a1a18; color: #fff; }
+.btn-add:hover { background: #333; }
+.btn-dup { background: var(--accent); color: #fff; }
+.btn-dup:hover { background: #c73a15; }
+.btn-exp { background: transparent; color: #1a1a18; border: 1px solid #d4d0c8; }
+.btn-exp:hover { border-color: #1a1a18; }
 
-  /* NOTES */
-  .notes-section {
-    max-width: 860px;
-    margin: 24px auto 0;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--accent2);
-    padding: 14px 16px;
-  }
-  .notes-section label {
-    display: block;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 6px;
-  }
-  .notes-section textarea {
-    width: 100%;
-    min-height: 64px;
-    border: 1px solid var(--border);
-    background: var(--input-bg);
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 13px;
-    color: var(--text);
-    padding: 8px 10px;
-    resize: vertical;
-    outline: none;
-  }
-  .notes-section textarea:focus { border-color: var(--accent2); }
+.counter-bar { max-width: 860px; margin: 16px auto 0; display: flex; gap: 24px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; }
+.counter-item { color: #7a7870; }
+.counter-item b { color: #1a1a18; font-size: 20px; font-weight: 600; vertical-align: middle; margin-right: 4px; }
+.counter-item.red b { color: var(--accent); }
 
-  /* SIGN */
-  .sign-row {
-    max-width: 860px;
-    margin: 24px auto 40px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 24px;
-  }
-  .sign-block label {
-    display: block;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 8px;
-  }
-  .sign-line {
-    border-bottom: 1px solid var(--text);
-    height: 28px;
-    position: relative;
-  }
-  .sign-line input {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    border: none;
-    background: transparent;
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 13px;
-    padding: 4px 0;
-    outline: none;
-  }
+#saveIndicator { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--success-color); opacity: 0; transition: opacity 0.3s; margin-left: 8px; }
 
-  /* PRINT */
-  @media print {
-    body { background: #fff; padding: 10mm; }
-    .btn, .actions, .counter-bar { display: none; }
-    .header, .meta-bar, .table-wrapper, .notes-section, .sign-row { max-width: 100%; }
-    .table-wrapper { border: 1px solid #999; }
-    table { font-size: 11px; }
-    thead th { font-size: 9px; }
-    tbody td input, tbody td select { font-size: 11px; border: none; pointer-events: none; }
-    .btn-del { display: none; }
-    .row-num { display: table-cell !important; }
-  }
+.flash { animation: flashAnim 0.4s ease; }
+@keyframes flashAnim { 0%{background:#fff8e0} 100%{background:transparent} }
 
-  .flash {
-    animation: flashAnim 0.4s ease;
-  }
-  @keyframes flashAnim {
-    0% { background: #fff8e0; }
-    100% { background: transparent; }
-  }
+/* ── MOBILE ── */
+body.mode-mobile { font-family: 'Onest', sans-serif; background: #111110; color: #f0ede8; height: 100vh; overflow: hidden; display: flex; flex-direction: column; max-width: 480px; margin: 0 auto; padding: 0; }
+body.mode-mobile .mobile-wrap  { display: flex; flex-direction: column; height: 100%; }
+body.mode-mobile .desktop-wrap { display: none; }
+.mobile-wrap { display: none; }
+
+.app-header { padding: 52px 20px 16px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.app-title { font-family: 'Unbounded', sans-serif; font-size: 18px; font-weight: 800; letter-spacing: -0.02em; color: #f0ede8; }
+.app-title span { color: var(--accent); }
+.icon-btn { width: 40px; height: 40px; border-radius: 12px; border: 1px solid #333330; background: #1c1c1a; color: #f0ede8; font-size: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.15s; }
+.icon-btn:active { transform: scale(0.92); }
+
+.m-tabs { display: flex; gap: 4px; padding: 0 20px 16px; flex-shrink: 0; }
+.m-tab { flex: 1; padding: 8px; border-radius: 10px; border: 1px solid #333330; background: transparent; color: #7a7870; font-family: 'Onest', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; text-align: center; }
+.m-tab.active { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+
+.m-screen { display: none; flex: 1; overflow-y: auto; padding: 0 20px 20px; }
+.m-screen.active { display: block; }
+
+.m-section-label { font-family: 'Unbounded', sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7a7870; margin-bottom: 12px; margin-top: 20px; }
+
+.profiles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; }
+
+.profile-btn { background: #1c1c1a; border: 1px solid #333330; border-radius: 16px; padding: 16px 14px; cursor: pointer; transition: all 0.15s; text-align: left; position: relative; overflow: hidden; }
+.profile-btn::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--accent); opacity: 0; transition: opacity 0.15s; }
+.profile-btn:active { transform: scale(0.96); border-color: var(--accent); }
+.profile-btn:active::before { opacity: 1; }
+.profile-btn.sending { border-color: var(--accent2); animation: mpulse 0.6s ease; }
+.profile-btn.sent { border-color: #2d9e5f; }
+@keyframes mpulse { 0%{transform:scale(1)} 50%{transform:scale(0.97)} 100%{transform:scale(1)} }
+.profile-btn-icon { font-size: 22px; margin-bottom: 8px; display: block; }
+.profile-btn-name { font-family: 'Unbounded', sans-serif; font-size: 12px; font-weight: 600; color: #f0ede8; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.profile-btn-sub { font-size: 11px; color: #7a7870; line-height: 1.4; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.profile-btn-status { position: absolute; top: 10px; right: 10px; font-size: 14px; opacity: 0; transition: opacity 0.3s; }
+.profile-btn.sent .profile-btn-status { opacity: 1; }
+
+.add-profile-btn { background: transparent; border: 1px dashed #333330; border-radius: 16px; padding: 16px 14px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #7a7870; font-family: 'Onest', sans-serif; font-size: 13px; transition: all 0.15s; min-height: 110px; }
+.add-profile-btn:active { border-color: var(--accent); color: var(--accent); transform: scale(0.96); }
+
+.manual-form { background: #1c1c1a; border: 1px solid #333330; border-radius: 16px; padding: 16px; margin-bottom: 8px; }
+.m-field-group { margin-bottom: 14px; }
+.m-field-label { font-size: 11px; font-weight: 500; color: #7a7870; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; display: block; }
+.m-input, .m-select { width: 100%; padding: 13px 14px; background: #111110; border: 1px solid #333330; border-radius: 12px; color: #f0ede8; font-family: 'Onest', sans-serif; font-size: 15px; outline: none; transition: border-color 0.15s; -webkit-appearance: none; }
+.m-input:focus, .m-select:focus { border-color: var(--accent); }
+.m-input::placeholder { color: #7a7870; }
+
+.profile-card { background: #1c1c1a; border: 1px solid #333330; border-radius: 16px; padding: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; }
+.profile-card-info { flex: 1; min-width: 0; }
+.profile-card-name { font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 600; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #f0ede8; }
+.profile-card-sub { font-size: 11px; color: #7a7870; }
+.profile-card-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.small-btn { width: 34px; height: 34px; border-radius: 10px; border: 1px solid #333330; background: #252523; color: #7a7870; font-size: 15px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.15s; }
+.small-btn:active { transform: scale(0.9); }
+.small-btn.del:active { color: var(--accent); border-color: var(--accent); }
+
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; display: none; align-items: flex-end; }
+.modal-overlay.open { display: flex; }
+.modal { background: #1c1c1a; border-radius: 24px 24px 0 0; padding: 24px 20px 40px; width: 100%; max-height: 90vh; overflow-y: auto; animation: slideUp 0.3s ease; }
+@keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+.modal-handle { width: 36px; height: 4px; background: #333330; border-radius: 2px; margin: 0 auto 20px; }
+.modal-title { font-family: 'Unbounded', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 20px; color: #f0ede8; }
+
+.emoji-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.emoji-opt { width: 40px; height: 40px; border-radius: 10px; border: 1px solid #333330; background: #111110; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.12s; }
+.emoji-opt.selected { border-color: var(--accent); background: rgba(232,69,26,0.15); }
+.emoji-opt:active { transform: scale(0.88); }
+
+.modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+.btn-primary { flex: 1; padding: 14px; background: var(--accent); border: none; border-radius: 12px; color: #fff; font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+.btn-primary:active { transform: scale(0.97); background: #c73a15; }
+.btn-secondary { flex: 1; padding: 14px; background: #252523; border: 1px solid #333330; border-radius: 12px; color: #7a7870; font-family: 'Onest', sans-serif; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+.btn-secondary:active { transform: scale(0.97); }
+
+.history-item { background: #1c1c1a; border: 1px solid #333330; border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
+.history-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+.history-dot.synced { background: #2d9e5f; }
+.history-info { flex: 1; min-width: 0; }
+.history-name { font-size: 13px; font-weight: 500; margin-bottom: 2px; color: #f0ede8; }
+.history-meta { font-size: 11px; color: #7a7870; }
+.history-status { font-size: 11px; color: #7a7870; flex-shrink: 0; text-align: right; }
+
+.empty-state { text-align: center; padding: 60px 20px; color: #7a7870; }
+.empty-state-icon { font-size: 48px; margin-bottom: 12px; }
+.empty-state-text { font-size: 14px; line-height: 1.5; }
+
+.toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px); background: #2d9e5f; color: #fff; padding: 12px 20px; border-radius: 12px; font-size: 14px; font-weight: 500; opacity: 0; transition: all 0.3s; white-space: nowrap; z-index: 300; pointer-events: none; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.error { background: var(--accent); }
+
+.switch-to-desktop-btn { display: block; width: calc(100% - 40px); margin: 8px 20px; padding: 12px; background: #1c1c1a; border: 1px solid #333330; border-radius: 12px; color: #7a7870; font-family: 'Onest', sans-serif; font-size: 13px; text-align: center; cursor: pointer; transition: all 0.15s; flex-shrink: 0; }
+.switch-to-desktop-btn:active { border-color: var(--accent); color: var(--accent); }
 </style>
 </head>
-<body>
+<body class="mode-desktop">
 
-<div class="header">
-  <div class="header-label">Журнал учёта</div>
-  <h1>Инциденты — статическое электричество</h1>
-</div>
-
-
-<div class="table-wrapper">
-  <div class="table-title">
-    Записи инцидентов &nbsp;<span id="incidentCount">0 записей</span>
+<!-- ═══════════════════ DESKTOP ═══════════════════ -->
+<div class="desktop-wrap">
+  <div class="switch-btn-desktop">
+    <button onclick="switchToMobile()">⚡ Мобильный режим</button>
   </div>
-  <table>
-    <thead>
-      <tr>
-        <th style="width:32px">#</th>
-        <th style="width:90px">Дата</th>
-        <th style="min-width:100px">ФИО</th>
-        <th style="min-width:100px">Источник разряда</th>
-        <th style="min-width:100px">Локация</th>
-        <th style="min-width:80px">Последствия</th>
-        <th style="width:30px"></th>
-      </tr>
-    </thead>
-    <tbody id="tableBody"></tbody>
-  </table>
+  <div class="d-header">
+    <div class="d-header-label">Журнал учёта</div>
+    <h1>Инциденты — статическое электричество</h1>
+  </div>
+  <div class="table-wrapper">
+    <div class="table-title">Записи инцидентов &nbsp;<span id="incidentCount">0 записей</span></div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:32px">#</th>
+          <th style="width:90px">Дата</th>
+          <th style="min-width:100px">ФИО</th>
+          <th style="min-width:100px">Источник разряда</th>
+          <th style="min-width:100px">Локация</th>
+          <th style="min-width:80px">Последствия</th>
+          <th style="width:30px"></th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+  <div class="d-actions">
+    <button class="btn btn-add" onclick="addRow()">+ Добавить строку</button>
+    <button class="btn btn-dup" onclick="duplicateLastRow()">⎘ Дублировать строку</button>
+    <button class="btn btn-exp" id="btnExport" onclick="exportToSheets()">Экспорт</button>
+    <span id="saveIndicator">✓ сохранено</span>
+  </div>
+  <div class="counter-bar">
+    <div class="counter-item red"><b id="cntTotal">0</b> инцидентов всего</div>
+  </div>
 </div>
 
-<div class="actions">
-  <button class="btn btn-add" onclick="addRow()">+ Добавить строку</button>
-  <button class="btn btn-print" onclick="duplicateLastRow()">⎘ Дублировать строку</button>
-  <button class="btn btn-export" id="btnExport" onclick="exportToSheets()">Экспорт</button>
-  <span id="saveIndicator" style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#1a7a3f;opacity:0;transition:opacity 0.3s;margin-left:8px;">✓ сохранено</span>
+<!-- ═══════════════════ MOBILE ═══════════════════ -->
+<div class="mobile-wrap">
+  <div class="app-header">
+    <div class="app-title">⚡ <span>Ток</span></div>
+    <div style="display:flex;gap:8px">
+      <div class="icon-btn" onclick="showHistory()">🕐</div>
+    </div>
+  </div>
+  <div class="m-tabs">
+    <button class="m-tab active" onclick="switchTab('quick',this)">Быстрая запись</button>
+    <button class="m-tab" onclick="switchTab('profiles',this)">Профили</button>
+  </div>
+
+  <div class="m-screen active" id="screen-quick">
+    <div class="m-section-label">Нажми — запись отправится сразу</div>
+    <div class="profiles-grid" id="profilesGrid"></div>
+    <div class="m-section-label" style="margin-top:4px">или вручную</div>
+    <div class="manual-form">
+      <div class="m-field-group"><label class="m-field-label">ФИО</label><input class="m-input" id="manualName" placeholder="Иванов И.И."></div>
+      <div class="m-field-group"><label class="m-field-label">Источник разряда</label><input class="m-input" id="manualSource" placeholder="дверная ручка, ПК..."></div>
+      <div class="m-field-group"><label class="m-field-label">Локация</label><input class="m-input" id="manualLocation" placeholder="этаж, кабинет..."></div>
+      <div class="m-field-group" style="margin-bottom:0"><label class="m-field-label">Последствия</label>
+        <select class="m-select" id="manualConseq">
+          <option>— выберите —</option>
+          <option>Неприятный укол, без последствий</option>
+          <option>Перезагрузка ПК</option>
+          <option>ПК ушёл в сон / защиту</option>
+          <option>Синий экран / BSOD</option>
+          <option>Потеря данных / файлов</option>
+          <option>Выход из строя устройства</option>
+          <option>Прочее</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-primary" style="width:100%;margin-top:4px" onclick="sendManual()">Отправить</button>
+  </div>
+
+  <div class="m-screen" id="screen-profiles">
+    <div class="m-section-label">Настрой профили для быстрой отправки</div>
+    <div id="profilesList"></div>
+    <button class="add-profile-btn" style="width:100%" onclick="openAddProfile()">
+      <span style="font-size:24px">＋</span>Добавить профиль
+    </button>
+  </div>
+
+  <button class="switch-to-desktop-btn" onclick="switchToDesktop()">🖥 Версия для ПК</button>
 </div>
 
-<div class="counter-bar">
-  <div class="counter-item red"><b id="cntTotal">0</b> инцидентов всего</div>
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- MODAL profile -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modalTitle">Новый профиль</div>
+    <div class="m-field-group">
+      <label class="m-field-label">Иконка</label>
+      <div class="emoji-row">
+        <div class="emoji-opt selected" data-emoji="⚡" onclick="selectEmoji(this)">⚡</div>
+        <div class="emoji-opt" data-emoji="💻" onclick="selectEmoji(this)">💻</div>
+        <div class="emoji-opt" data-emoji="🖥️" onclick="selectEmoji(this)">🖥️</div>
+        <div class="emoji-opt" data-emoji="🖨️" onclick="selectEmoji(this)">🖨️</div>
+        <div class="emoji-opt" data-emoji="🚪" onclick="selectEmoji(this)">🚪</div>
+        <div class="emoji-opt" data-emoji="🍵" onclick="selectEmoji(this)">🍵</div>
+        <div class="emoji-opt" data-emoji="❄️" onclick="selectEmoji(this)">❄️</div>
+        <div class="emoji-opt" data-emoji="🪑" onclick="selectEmoji(this)">🪑</div>
+        <div class="emoji-opt" data-emoji="🔌" onclick="selectEmoji(this)">🔌</div>
+        <div class="emoji-opt" data-emoji="👤" onclick="selectEmoji(this)">👤</div>
+      </div>
+    </div>
+    <div class="m-field-group"><label class="m-field-label">Название профиля</label><input class="m-input" id="pName" placeholder="Чайник на кухне"></div>
+    <div class="m-field-group"><label class="m-field-label">ФИО</label><input class="m-input" id="pFio" placeholder="Иванов И.И."></div>
+    <div class="m-field-group"><label class="m-field-label">Источник разряда</label><input class="m-input" id="pSource" placeholder="чайник"></div>
+    <div class="m-field-group"><label class="m-field-label">Локация</label><input class="m-input" id="pLocation" placeholder="12 этаж, кухня"></div>
+    <div class="m-field-group">
+      <label class="m-field-label">Последствия</label>
+      <select class="m-select" id="pConseq">
+        <option>— выберите —</option>
+        <option>Неприятный укол, без последствий</option>
+        <option>Перезагрузка ПК</option>
+        <option>ПК ушёл в сон / защиту</option>
+        <option>Синий экран / BSOD</option>
+        <option>Потеря данных / файлов</option>
+        <option>Выход из строя устройства</option>
+        <option>Прочее</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModalDirect()">Отмена</button>
+      <button class="btn-primary" onclick="saveProfile()">Сохранить</button>
+    </div>
+  </div>
 </div>
 
+<!-- MODAL history -->
+<div class="modal-overlay" id="historyOverlay" onclick="closeHistory(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">История отправок</div>
+    <div id="historyList"></div>
+  </div>
+</div>
 
 <script>
-const SOURCES = ['— выберите —','Системный блок / ПК','Монитор','Ноутбук','Принтер / МФУ','Кресло','Дверная ручка','Стол / стойка','Другой сотрудник','Стена / перегородка','Металлический шкаф','Прочее'];
-const TYPES   = ['— тип —','ПК / моноблок','Ноутбук','Принтер / МФУ','Сервер / ИБП','Монитор','Смартфон / планшет','Мебель','Не связан с техникой','Прочее'];
-const CONSEQ  = ['— последствия —','Неприятный укол, без последствий','Перезагрузка ПК','ПК ушёл в сон / защиту','Синий экран / BSOD','Потеря данных / файлов','Выход из строя устройства','Прочее'];
+const SHEETS_URL   = 'https://script.google.com/macros/s/AKfycbzJVQfk-1M2i8vYFA7fMZ1ICpouv4Skm5D6xB94y-J0UV_MSzLuQu0Ixt8ryhKTjC3o/exec';
+const STORAGE_KEY  = 'static_incidents_v1';
+const STORAGE_PROF = 'tok_profiles_v1';
+const STORAGE_HIST = 'tok_history_v1';
+const STORAGE_MODE = 'tok_mode_v1';
 
-let rows = [];
-let idCounter = 0;
-
-function today() {
-  const d = new Date();
-  return d.toLocaleDateString('ru-RU');
+// ── ПЕРЕКЛЮЧЕНИЕ РЕЖИМОВ ──
+function switchToMobile() {
+  document.body.className = 'mode-mobile';
+  localStorage.setItem(STORAGE_MODE, 'mobile');
 }
+function switchToDesktop() {
+  document.body.className = 'mode-desktop';
+  localStorage.setItem(STORAGE_MODE, 'desktop');
+  renderTable();
+}
+
+// ── ДЕСКТОП ──
+const CONSEQ_OPTS = ['— последствия —','Неприятный укол, без последствий','Перезагрузка ПК','ПК ушёл в сон / защиту','Синий экран / BSOD','Потеря данных / файлов','Выход из строя устройства','Прочее'];
+let rows = [], idCounter = 0;
+
+function today() { return new Date().toLocaleDateString('ru-RU'); }
 
 function addRow(animate) {
   idCounter++;
@@ -375,18 +341,16 @@ function addRow(animate) {
   rows.push({ id, date: today(), name: '', source: '', location: '', conseq: '' });
   renderTable();
   if (animate !== false) {
-    const lastRow = document.querySelector(`tr[data-id="${id}"]`);
-    if (lastRow) { lastRow.classList.add('flash'); setTimeout(() => lastRow.classList.remove('flash'), 400); }
+    const el = document.querySelector(`tr[data-id="${id}"]`);
+    if (el) { el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 400); }
   }
 }
 
-function removeRow(id) {
-  rows = rows.filter(r => r.id !== id);
-  renderTable();
-}
+function removeRow(id) { rows = rows.filter(r => r.id !== id); renderTable(); }
 
 function renderTable() {
   const tbody = document.getElementById('tableBody');
+  if (!tbody) return;
   tbody.innerHTML = '';
   rows.forEach((row, i) => {
     const tr = document.createElement('tr');
@@ -397,144 +361,183 @@ function renderTable() {
       <td><input type="text" value="${row.name}" oninput="updateField(${row.id},'name',this.value)" placeholder="Иванов И.И."></td>
       <td><input type="text" value="${row.source}" oninput="updateField(${row.id},'source',this.value)" placeholder="дверная ручка, ПК..."></td>
       <td><input type="text" value="${row.location}" oninput="updateField(${row.id},'location',this.value)" placeholder="этаж, кабинет..."></td>
-      <td><select onchange="updateField(${row.id},'conseq',this.value)">${CONSEQ.map(s=>`<option${s===row.conseq?' selected':''}>${s}</option>`).join('')}</select></td>
-      <td><button class="btn-del" onclick="removeRow(${row.id})" title="Удалить">×</button></td>
+      <td><select onchange="updateField(${row.id},'conseq',this.value)">${CONSEQ_OPTS.map(s=>`<option${s===row.conseq?' selected':''}>${s}</option>`).join('')}</select></td>
+      <td><button class="btn-del" onclick="removeRow(${row.id})">×</button></td>
     `;
     tbody.appendChild(tr);
   });
   updateCounters();
-  document.getElementById('incidentCount').textContent = rows.length + ' ' + plural(rows.length, 'запись','записи','записей');
+  const el = document.getElementById('incidentCount');
+  if (el) el.textContent = rows.length + ' ' + plural(rows.length,'запись','записи','записей');
 }
 
-function updateField(id, field, val) {
-  const row = rows.find(r => r.id === id);
-  if (row) row[field] = val;
-  updateCounters();
-}
-
-function updateCounters() {
-  document.getElementById('cntTotal').textContent = rows.length;
-}
-
-function plural(n, one, few, many) {
-  const m = n % 10, h = n % 100;
-  if (m===1 && h!==11) return one;
-  if (m>=2 && m<=4 && (h<10||h>=20)) return few;
-  return many;
-}
-
-function exportCSV() {
-  const header = ['№','Дата','ФИО','Источник разряда','Локация','Последствия'];
-  const lines = [header.join(';')];
-  rows.forEach((r,i) => {
-    lines.push([i+1, r.date, r.name, r.source, r.location, r.conseq].join(';'));
-  });
-  const blob = new Blob(['\ufeff'+lines.join('\n')], {type:'text/csv;charset=utf-8'});
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'incidents_static.csv'; a.click();
-}
-
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzJVQfk-1M2i8vYFA7fMZ1ICpouv4Skm5D6xB94y-J0UV_MSzLuQu0Ixt8ryhKTjC3o/exec';
-
-async function exportToSheets() {
-  const btn = document.getElementById('btnExport');
-  const indicator = document.getElementById('saveIndicator');
-
-  const data = rows
-    .filter(r => r.date || r.name || r.source)
-    .map((r, i) => [i+1, r.date, r.name, r.source, r.location, r.conseq]);
-
-  if (data.length === 0) {
-    alert('Нет данных для экспорта — заполните хотя бы одну строку.');
-    return;
-  }
-
-  btn.textContent = '⏳ Отправка...';
-  btn.disabled = true;
-
-  try {
-    await fetch(SHEETS_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
-    indicator.textContent = '✓ отправлено в таблицу';
-    indicator.style.color = '#1a7a3f';
-    indicator.style.opacity = '1';
-    clearTimeout(indicator._t);
-    indicator._t = setTimeout(() => { indicator.style.opacity = '0'; }, 3000);
-    // Очищаем форму после успешного экспорта
-    rows = []; idCounter = 0;
-    addRow(false);
-    localStorage.removeItem(STORAGE_KEY);
-  } catch(e) {
-    alert('Ошибка при отправке: ' + e.message);
-  } finally {
-    btn.textContent = 'Экспорт';
-    btn.disabled = false;
-  }
-}
+function updateField(id, field, val) { const r = rows.find(r=>r.id===id); if(r) r[field]=val; updateCounters(); }
+function updateCounters() { const el=document.getElementById('cntTotal'); if(el) el.textContent=rows.length; }
+function plural(n,one,few,many) { const m=n%10,h=n%100; if(m===1&&h!==11)return one; if(m>=2&&m<=4&&(h<10||h>=20))return few; return many; }
 
 function duplicateLastRow() {
   if (rows.length === 0) { addRow(); return; }
-  const last = rows[rows.length - 1];
+  const last = rows[rows.length-1];
   idCounter++;
   const id = idCounter;
   rows.push({ id, date: today(), name: last.name, source: last.source, location: last.location, conseq: last.conseq });
   renderTable();
-  const lastRow = document.querySelector(`tr[data-id="${id}"]`);
-  if (lastRow) { lastRow.classList.add('flash'); setTimeout(() => lastRow.classList.remove('flash'), 400); }
+  const el = document.querySelector(`tr[data-id="${id}"]`);
+  if (el) { el.classList.add('flash'); setTimeout(()=>el.classList.remove('flash'),400); }
   save();
 }
 
-
 function maskDate(e, input) {
   setTimeout(() => {
-    let v = input.value.replace(/\D/g, '').slice(0, 8);
-    let out = '';
-    if (v.length >= 1) out = v.slice(0,2);
-    if (v.length >= 3) out += '.' + v.slice(2,4);
-    if (v.length >= 5) out += '.' + v.slice(4,8);
-    input.value = out;
-  }, 0);
+    let v = input.value.replace(/\D/g,'').slice(0,8), out='';
+    if(v.length>=1) out=v.slice(0,2);
+    if(v.length>=3) out+='.'+v.slice(2,4);
+    if(v.length>=5) out+='.'+v.slice(4,8);
+    input.value=out;
+  },0);
 }
 
-
-// ─── СОХРАНЕНИЕ ───
-const STORAGE_KEY = 'static_incidents_v1';
+async function exportToSheets() {
+  const btn = document.getElementById('btnExport');
+  const ind = document.getElementById('saveIndicator');
+  const data = rows.filter(r=>r.date||r.name||r.source).map((r,i)=>[i+1,r.date,r.name,r.source,r.location,r.conseq]);
+  if (!data.length) { alert('Нет данных для экспорта.'); return; }
+  btn.textContent='⏳ Отправка...'; btn.disabled=true;
+  try {
+    await fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+    ind.textContent='✓ отправлено'; ind.style.color='#1a7a3f'; ind.style.opacity='1';
+    clearTimeout(ind._t); ind._t=setTimeout(()=>ind.style.opacity='0',3000);
+    rows=[]; idCounter=0; addRow(false); localStorage.removeItem(STORAGE_KEY);
+  } catch(e) { alert('Ошибка: '+e.message); }
+  finally { btn.textContent='Экспорт'; btn.disabled=false; }
+}
 
 function save() {
-  const state = {
-    rows, idCounter,
-  };
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  const el = document.getElementById('saveIndicator');
-  if (el) { el.style.opacity = '1'; clearTimeout(el._t); el._t = setTimeout(() => el.style.opacity = '0', 1500); }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({rows,idCounter}));
+  const el=document.getElementById('saveIndicator');
+  if(el){el.textContent='✓ сохранено';el.style.color='#1a7a3f';el.style.opacity='1';clearTimeout(el._t);el._t=setTimeout(()=>el.style.opacity='0',1500);}
 }
 
 function load() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return false;
-    const s = JSON.parse(raw);
-    rows = s.rows || []; idCounter = s.idCounter || 0;
+    const raw=localStorage.getItem(STORAGE_KEY); if(!raw) return false;
+    const s=JSON.parse(raw); rows=s.rows||[]; idCounter=s.idCounter||0;
     renderTable(); return true;
-  } catch(e) { return false; }
+  } catch(e){return false;}
 }
 
+const _updateField=updateField; updateField=(id,field,val)=>{_updateField(id,field,val);save();};
+const _removeRow=removeRow; removeRow=(id)=>{_removeRow(id);save();};
+const _addRow=addRow; addRow=(animate)=>{_addRow(animate);save();};
 
-// Перехватываем все изменения для автосохранения
-const _updateField = updateField;
-updateField = (id, field, val) => { _updateField(id, field, val); save(); };
-const _removeRow = removeRow;
-removeRow = (id) => { _removeRow(id); save(); };
-const _addRow = addRow;
-addRow = (animate) => { _addRow(animate); save(); };
+// ── МОБАЙЛ ──
+let profiles=[], mHistory=[], editingId=null, selectedEmoji='⚡';
 
+function initMobile() {
+  try{profiles=JSON.parse(localStorage.getItem(STORAGE_PROF))||[];}catch(e){profiles=[];}
+  try{mHistory=JSON.parse(localStorage.getItem(STORAGE_HIST))||[];}catch(e){mHistory=[];}
+  renderProfiles();
+}
 
-// Init — восстанавливаем незаэкспортированные данные
-if (!load()) { addRow(false); }
+function switchTab(id, btn) {
+  document.querySelectorAll('.m-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.m-screen').forEach(s=>s.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('screen-'+id).classList.add('active');
+}
+
+function renderProfiles() {
+  const grid=document.getElementById('profilesGrid'); if(!grid) return;
+  grid.innerHTML='';
+  profiles.forEach(p=>{
+    const btn=document.createElement('div'); btn.className='profile-btn'; btn.dataset.id=p.id;
+    btn.innerHTML=`<span class="profile-btn-icon">${p.emoji}</span><div class="profile-btn-name">${p.name}</div><div class="profile-btn-sub">${p.source} · ${p.location}</div><div class="profile-btn-status">✓</div>`;
+    btn.addEventListener('click',()=>sendProfile(p,btn)); grid.appendChild(btn);
+  });
+  const list=document.getElementById('profilesList'); if(!list) return;
+  list.innerHTML='';
+  if(!profiles.length){list.innerHTML=`<div class="empty-state"><div class="empty-state-icon">⚡</div><div class="empty-state-text">Профилей пока нет.<br>Создай первый!</div></div>`;return;}
+  profiles.forEach(p=>{
+    const card=document.createElement('div'); card.className='profile-card';
+    card.innerHTML=`<span style="font-size:24px">${p.emoji}</span><div class="profile-card-info"><div class="profile-card-name">${p.name}</div><div class="profile-card-sub">${p.fio} · ${p.source} · ${p.location}</div></div><div class="profile-card-actions"><div class="small-btn" onclick="editProfile('${p.id}')">✎</div><div class="small-btn del" onclick="deleteProfile('${p.id}')">✕</div></div>`;
+    list.appendChild(card);
+  });
+}
+
+async function sendProfile(p, btn) {
+  btn.classList.add('sending');
+  const ok=await sendToSheets([[today(),p.fio,p.source,p.location,p.conseq]]);
+  btn.classList.remove('sending');
+  if(ok){btn.classList.add('sent');setTimeout(()=>btn.classList.remove('sent'),2000);addMHistory(p.name,p.fio,p.source,p.location,true);showToast('✓ Отправлено!');}
+  else{addMHistory(p.name,p.fio,p.source,p.location,false);showToast('Ошибка сети',true);}
+}
+
+async function sendManual() {
+  const name=document.getElementById('manualName').value.trim();
+  const source=document.getElementById('manualSource').value.trim();
+  const loc=document.getElementById('manualLocation').value.trim();
+  const conseq=document.getElementById('manualConseq').value;
+  if(!name&&!source){showToast('Заполните хотя бы ФИО или источник',true);return;}
+  const ok=await sendToSheets([[today(),name,source,loc,conseq]]);
+  if(ok){['manualName','manualSource','manualLocation'].forEach(id=>document.getElementById(id).value='');document.getElementById('manualConseq').selectedIndex=0;addMHistory('Вручную',name,source,loc,true);showToast('✓ Отправлено!');}
+  else{addMHistory('Вручную',name,source,loc,false);showToast('Ошибка сети',true);}
+}
+
+async function sendToSheets(data) {
+  try{await fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});return true;}catch(e){return false;}
+}
+
+function addMHistory(pName,fio,source,location,synced) {
+  const now=new Date();
+  mHistory.unshift({pName,fio,source,location,synced,time:now.toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'}),date:now.toLocaleDateString('ru-RU')});
+  if(mHistory.length>50) mHistory.pop();
+  localStorage.setItem(STORAGE_HIST,JSON.stringify(mHistory));
+}
+
+function showHistory() {
+  const list=document.getElementById('historyList');
+  list.innerHTML=mHistory.length===0
+    ?`<div class="empty-state"><div class="empty-state-icon">🕐</div><div class="empty-state-text">История пуста</div></div>`
+    :mHistory.map(h=>`<div class="history-item"><div class="history-dot ${h.synced?'synced':''}"></div><div class="history-info"><div class="history-name">${h.pName} — ${h.fio}</div><div class="history-meta">${h.source} · ${h.location}</div></div><div class="history-status">${h.time}<br>${h.date}</div></div>`).join('');
+  document.getElementById('historyOverlay').classList.add('open');
+}
+function closeHistory(e){if(e.target===document.getElementById('historyOverlay'))document.getElementById('historyOverlay').classList.remove('open');}
+
+function openAddProfile() {
+  editingId=null; document.getElementById('modalTitle').textContent='Новый профиль';
+  ['pName','pFio','pSource','pLocation'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('pConseq').selectedIndex=0; selectEmojiByChar('⚡');
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function editProfile(id) {
+  const p=profiles.find(x=>x.id===id); if(!p) return;
+  editingId=id; document.getElementById('modalTitle').textContent='Редактировать';
+  document.getElementById('pName').value=p.name; document.getElementById('pFio').value=p.fio;
+  document.getElementById('pSource').value=p.source; document.getElementById('pLocation').value=p.location;
+  const sel=document.getElementById('pConseq');
+  for(let i=0;i<sel.options.length;i++){if(sel.options[i].text===p.conseq){sel.selectedIndex=i;break;}}
+  selectEmojiByChar(p.emoji); document.getElementById('modalOverlay').classList.add('open');
+}
+function deleteProfile(id){profiles=profiles.filter(p=>p.id!==id);localStorage.setItem(STORAGE_PROF,JSON.stringify(profiles));renderProfiles();showToast('Профиль удалён');}
+function saveProfile() {
+  const name=document.getElementById('pName').value.trim(); if(!name){document.getElementById('pName').focus();return;}
+  const fio=document.getElementById('pFio').value.trim(), source=document.getElementById('pSource').value.trim(), loc=document.getElementById('pLocation').value.trim(), conseq=document.getElementById('pConseq').value;
+  if(editingId){const p=profiles.find(x=>x.id===editingId);if(p)Object.assign(p,{name,fio,source,location:loc,conseq,emoji:selectedEmoji});}
+  else{profiles.push({id:Date.now().toString(),name,fio,source,location:loc,conseq,emoji:selectedEmoji});}
+  localStorage.setItem(STORAGE_PROF,JSON.stringify(profiles));renderProfiles();closeModalDirect();showToast(editingId?'Профиль обновлён':'Профиль создан');
+}
+function closeModal(e){if(e.target===document.getElementById('modalOverlay'))closeModalDirect();}
+function closeModalDirect(){document.getElementById('modalOverlay').classList.remove('open');}
+function selectEmoji(el){document.querySelectorAll('.emoji-opt').forEach(e=>e.classList.remove('selected'));el.classList.add('selected');selectedEmoji=el.dataset.emoji;}
+function selectEmojiByChar(char){document.querySelectorAll('.emoji-opt').forEach(e=>e.classList.toggle('selected',e.dataset.emoji===char));selectedEmoji=char;}
+
+function showToast(msg,error=false){const t=document.getElementById('toast');t.textContent=msg;t.className='toast'+(error?' error':'');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+
+// ── INIT ──
+const savedMode=localStorage.getItem(STORAGE_MODE)||'desktop';
+document.body.className='mode-'+savedMode;
+if(!load()){addRow(false);}
+initMobile();
 </script>
 </body>
 </html>
